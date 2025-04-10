@@ -489,6 +489,33 @@ class ForStat(Stat):  # incomplete
         self.step.parent = self
         self.body.parent = self
 
+    
+    def lower(self):
+        # Labels
+        entry_label = TYPENAMES['label']()
+        exit_label = TYPENAMES['label']()
+
+        # Exit point
+        exit_stat = EmptyStat(self.parent, symtab=self.symtab)
+        exit_stat.set_label(exit_label)
+
+        # Entry condition label
+        self.cond.set_label(entry_label)
+
+        # Branch: if not cond -> exit
+        branch = BranchStat(None, self.cond.destination(), exit_label, self.symtab, negcond=True)
+
+        # Loop jump back to condition
+        loop = BranchStat(None, None, entry_label, self.symtab)
+
+        # Build the list of IR statements
+        stat_list = StatList(
+            self.parent,
+            [self.init, self.cond, branch, self.body, self.step, loop, exit_stat],
+            self.symtab
+        )
+
+        return self.parent.replace(self, stat_list)
 
 class AssignStat(Stat):
     def __init__(self, parent=None, target=None, offset=None, expr=None, symtab=None):

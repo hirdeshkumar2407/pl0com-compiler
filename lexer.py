@@ -36,7 +36,8 @@ TOKEN_DEFS = {
     'period': ['.'],
     'oddsym': ['odd'],
     'print': ['!', 'print'],
-    'read': ['?', 'read']
+    'read': ['?', 'read'],
+    'forsym': ['for']
 }
 
 
@@ -132,7 +133,7 @@ BEGIN
    x := 101;
    while x <= 105 do begin
     arr[x-100] := x;
-    !arr[x-100];
+    !arr[x-100];  
     x := x + 1
    end;
    
@@ -145,7 +146,13 @@ BEGIN
       x := x + 1;
       y := y + 1
     end
-  end
+  end  # <-- Note: There appears to be a missing "end" here
+ 
+   for a := 10  to 20 do
+   begin
+      print a;
+   end;
+
 END.'''
 
 if __name__ == '__main__':
