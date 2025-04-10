@@ -1,0 +1,13 @@
+VAR x, squ;
+
+PROCEDURE square;
+BEGIN
+   squ := x * x
+END;
+ 
+BEGIN
+   x := -1;   
+   read x;
+   CALL square;
+   !squ
+END. 
