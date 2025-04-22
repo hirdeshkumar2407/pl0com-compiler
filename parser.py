@@ -164,29 +164,6 @@ class Parser:
             self.expect('dosym')
             body = self.statement(symtab)
             return ir.WhileStat(cond=cond, body=body, symtab=symtab)
-        elif self.accept('forsym'):
-             self.expect('ident')
-             var = symtab.find(self.value)
-             self.expect('becomes')
-             start_expr = self.expression(symtab)
-             self.expect('tosym')
-             end_expr = self.expression(symtab)
-             self.expect('dosym')
-
-             # 👇 This is the key line — parses and consumes the entire for-body, including BEGIN..END
-             body = self.statement(symtab)
-             print("DEBUG after for-body:", self.symbol, self.value)
-
-             # Build init, cond, step
-             init = ir.AssignStat(target=var, offset=None, expr=start_expr, symtab=symtab)
-             cond = ir.BinExpr('leq', ir.Var(symbol=var, symtab=symtab), end_expr, symtab=symtab)
-             step_expr = ir.BinExpr('plus', ir.Var(symbol=var, symtab=symtab), ir.Const(1), symtab=symtab)
-             step = ir.AssignStat(target=var, offset=None, expr=step_expr, symtab=symtab)
-
-             return ir.ForStat(init=init, cond=cond, step=step, body=body, symtab=symtab)
-
-
-        
         elif self.accept('print'):
             exp = self.expression(symtab)
             return ir.PrintStat(exp=exp, symtab=symtab)
