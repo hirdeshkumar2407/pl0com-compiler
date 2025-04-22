@@ -488,6 +488,85 @@ class ForStat(Stat):  # incomplete
         self.cond.parent = self
         self.step.parent = self
         self.body.parent = self
+    
+    def lower(self):
+        # Labels for control flow
+        cond_label = TYPENAMES['label']()  # Label for the condition check
+        body_label = TYPENAMES['label']()  # Label for the start of the body (optional, could jump directly)
+        exit_label = TYPENAMES['label']()  # Label for after the loop
+
+        # Create an EmptyStat for the exit point
+        exit_stat = EmptyStat(self.parent, symtab=self.symtab)
+        exit_stat.set_label(exit_label)
+
+        # --- Create lower-level components ---
+
+        # 1. Initialization (already likely a StatList if lowered previously, or single AssignStat)
+        init_lowered = self.init # Assume init might be already lowered if needed
+
+        # 2. Condition Check Block
+        #    - Set label for entry
+        #    - Evaluate condition expression
+        #    - Branch to exit if condition is false
+        cond_check_stat = self.cond # Assume cond is lowered expr list ending in temp
+        cond_check_stat.set_label(cond_label)
+        branch_to_exit = BranchStat(None, cond_check_stat.destination(), exit_label, self.symtab, negcond=True)
+        # Combine condition evaluation and branch
+        cond_block = StatList(None, [cond_check_stat, branch_to_exit], self.symtab)
+
+
+        # 3. Body Block (already a Stat node/list)
+        body_lowered = self.body
+        # Optional: Set body_label if you want a dedicated entry point
+        # body_lowered.set_label(body_label)
+
+        # 4. Step Block (already likely a StatList if lowered previously, or single AssignStat)
+        step_lowered = self.step
+
+        # 5. Unconditional Jump back to Condition Check
+        loop_back = BranchStat(None, None, cond_label, self.symtab)
+
+        # --- Assemble the final lowered StatList ---
+        # Order: Init -> Jump to Cond -> Cond Block -> Body Block -> Step Block -> Jump to Cond -> Exit Stat
+        # Note: We need to handle None for optional init/step
+        final_stats = []
+        if init_lowered:
+             # If init is a StatList, extend; otherwise append
+             if isinstance(init_lowered, StatList):
+                 final_stats.extend(init_lowered.children)
+             else:
+                 final_stats.append(init_lowered)
+
+        # Add the condition block (which includes the label)
+        if isinstance(cond_block, StatList):
+             final_stats.extend(cond_block.children)
+        else:
+             final_stats.append(cond_block)
+
+        # Add the body block
+        if isinstance(body_lowered, StatList):
+             final_stats.extend(body_lowered.children)
+        else:
+             final_stats.append(body_lowered)
+
+        # Add the step block (if it exists)
+        if step_lowered:
+             if isinstance(step_lowered, StatList):
+                 final_stats.extend(step_lowered.children)
+             else:
+                 final_stats.append(step_lowered)
+
+        # Add the loop-back jump
+        final_stats.append(loop_back)
+
+        # Add the exit block
+        final_stats.append(exit_stat)
+
+        # Replace the original ForStat node with the new StatList
+        print(f"Lowering ForStat {id(self)} into StatList")
+        new_list = StatList(self.parent, final_stats, self.symtab)
+        return self.parent.replace(self, new_list)
+
 
 
 class AssignStat(Stat):

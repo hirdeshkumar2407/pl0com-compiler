@@ -145,11 +145,49 @@ class Parser:
             return ir.CallStat(call_expr=ir.CallExpr(function=symtab.find(self.value), symtab=symtab), symtab=symtab)
         elif self.accept('beginsym'):
             statement_list = ir.StatList(symtab=symtab)
-            statement_list.append(self.statement(symtab))
-            while self.accept('semicolon'):
-                statement_list.append(self.statement(symtab))
+            
+             # Handle empty block: BEGIN END
+            if self.new_sym == 'endsym':
+                self.expect('endsym') # Consume END
+                print("Parsed empty BEGIN END block.") # Optional debug
+                return statement_list # Return the empty list
+            # If not empty, parse the first statement. It MUST exist.
+            first_stat = self.statement(symtab)
+            if first_stat:
+                statement_list.append(first_stat)
+            else:
+                # This indicates an error - BEGIN wasn't followed by a valid statement or END
+                # self.statement() should ideally raise an error itself if it finds an
+                # unexpected token instead of returning None, but we handle None here too.
+                self.error(f"Syntax Error: Expected statement or END after BEGIN, found {self.new_sym}")
+                # Depending on your error strategy, you might raise an exception here
+                raise SyntaxError(f"Expected statement or END after BEGIN, found {self.new_sym}")
+                # Or return None if the calling function can handle it (less ideal)
+                # return None
+
+              # Loop only if a semicolon follows the first statement
+            while self.new_sym == 'semicolon': # Peek, don't consume yet
+                self.accept('semicolon') # Consume the semicolon now
+
+                # CRITICAL CHECK: If END follows the semicolon, stop the loop.
+                # This handles cases like "stmt1; stmt2; END" or "stmt1; END"
+                if self.new_sym == 'endsym':
+                    print("Found END immediately after semicolon, ending statement list.") # Optional debug
+                    break # Exit the while loop, expect('endsym') below will handle it
+
+                # If not END, then parse the next statement that MUST follow the semicolon
+                next_stat = self.statement(symtab)
+                if next_stat:
+                    statement_list.append(next_stat)
+                else:
+                    # Error: Found a semicolon but it wasn't followed by a valid statement or END
+                    self.error(f"Syntax Error: Expected statement after semicolon, found {self.new_sym}")
+                    # Raise an exception or break loop
+                    raise SyntaxError(f"Expected statement after semicolon, found {self.new_sym}")
+                    # break
+
             self.expect('endsym')
-            statement_list.print_content()
+            statement_list.print_content() # Optional debug print        
             return statement_list
         elif self.accept('ifsym'):
             cond = self.condition(symtab)
@@ -164,6 +202,61 @@ class Parser:
             self.expect('dosym')
             body = self.statement(symtab)
             return ir.WhileStat(cond=cond, body=body, symtab=symtab)
+        elif self.accept('forsym'):
+             print("FOR LOOP - Start parsing")
+             self.expect('ident')
+             loop_var_name = self.value # Get the loop variable name
+
+              # --- SCOPE HANDLING START ---
+              # Create the Symbol for the loop variable
+             loop_var_type = ir.TYPENAMES.get('int')
+             if not loop_var_type:
+                 self.error(f"Internal Error: Type 'int' not found in ir.TYPENAMES")
+                 raise LookupError("Internal Error: Type 'int' not found for for-loop variable")
+             loop_var_symbol = ir.Symbol(name=loop_var_name, stype=loop_var_type, alloct='auto')
+
+             # Create a new symbol table for the loop body scope
+             body_symtab = ir.SymbolTable(symtab[:] + [loop_var_symbol])
+             print(f"FOR LOOP - Created symbol '{loop_var_symbol}' and body_symtab for '{loop_var_name}'")
+
+             # Use the *newly created* symbol for 'var'
+             var = loop_var_symbol
+             # --- SCOPE HANDLING END ---
+            
+             print(f"FOR LOOP - Variable symbol: {var}")
+             self.expect('becomes')
+             print("FOR LOOP - Assignment operator found")
+
+             # Start/End expressions are evaluated in the *outer* scope
+             start_expr = self.expression(symtab)
+             print("FOR LOOP - Start expression parsed")
+
+             
+             self.expect('tosym')
+             print("FOR LOOP - 'to' keyword found")
+
+             end_expr = self.expression(symtab)
+             print("FOR LOOP - End expression parsed")
+
+             self.expect('dosym')
+             print("FOR LOOP - 'do' keyword found")
+
+             print("FOR LOOP - Parsing body, next token:", self.new_sym, self.new_value)
+             # Parse the loop body using the new symbol table
+             body = self.statement(body_symtab) # <<< USE body_symtab
+             print("FOR LOOP - Body parsed, next token:", self.new_sym, self.new_value)
+
+             
+             # Create IR nodes using the correct symbol ('var') and symbol table ('body_symtab')
+             init = ir.AssignStat(target=var, offset=None, expr=start_expr, symtab=body_symtab)
+             cond = ir.BinExpr(children=['leq', ir.Var(var=var, symtab=body_symtab), end_expr], symtab=body_symtab)
+             step_expr = ir.BinExpr(children=['plus', ir.Var(var=var, symtab=body_symtab), ir.Const(value=1, symtab=body_symtab)], symtab=body_symtab)
+             step = ir.AssignStat(target=var, offset=None, expr=step_expr, symtab=body_symtab)
+             print("FOR LOOP - Complete, returning ForStat")
+             # Pass body_symtab to ForStat itself
+             return ir.ForStat(init=init, cond=cond, step=step, body=body, symtab=body_symtab)
+             # --- END OF BLOCK TO ADD ---
+
         elif self.accept('print'):
             exp = self.expression(symtab)
             return ir.PrintStat(exp=exp, symtab=symtab)

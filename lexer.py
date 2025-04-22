@@ -36,7 +36,9 @@ TOKEN_DEFS = {
     'period': ['.'],
     'oddsym': ['odd'],
     'print': ['!', 'print'],
-    'read': ['?', 'read']
+    'read': ['?', 'read'],
+    'forsym': ['for'],
+    'tosym': ['to']
 }
 
 
@@ -110,10 +112,10 @@ BEGIN
    test := 1234;
    squ := x * x
 END;
- 
+
 BEGIN
    x := -1;
-   
+
    read x;
    if x > 100 then begin
       print -x
@@ -128,14 +130,14 @@ BEGIN
       x:=x+1;
       !squ
    END;
-   
+
    x := 101;
    while x <= 105 do begin
     arr[x-100] := x;
     !arr[x-100];
     x := x + 1
    end;
-   
+
    x := 1;
    y := 1;
    while x <= 5 do begin
@@ -145,8 +147,17 @@ BEGIN
       x := x + 1;
       y := y + 1
     end
-  end
-END.'''
+  end; 
+
+  { The for loop starts next } 
+   for a := 10  to 20 do
+   begin
+      print a;
+   end;
+  
+
+END.''' # <<< This is the final END of the main program block
+
 
 if __name__ == '__main__':
     for t, w in Lexer(__test_program).tokens():
