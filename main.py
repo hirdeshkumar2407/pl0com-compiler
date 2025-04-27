@@ -44,6 +44,8 @@ def compile_program(text):
     print('\n', res, '\n')
 
     cfg = CFG(res)
+    print("\n\nOPTIMIZATION: Attempting Loop Unrolling\n")
+    cfg.unroll_loops(factor=2) # CALL the method implemented in cfg.py
     cfg.liveness()
     cfg.print_liveness()
     cfg.print_cfg_to_dot("cfg.dot")
