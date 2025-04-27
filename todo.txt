@@ -1,2 +1,19 @@
 1.) Recheck IR for loop
 2.) Loop Unrolling
+
+Ask Professor for help with unrolling
+
+
+Next Steps for Unrolling (If desired):
+Implement Suitability Heuristics (_is_loop_suitable_for_unrolling): Decide which of these 13 loops you actually want to unroll. You might check:
+Is it a "simple" loop (e.g., single entry, single back edge)?
+Is the loop body small? (Unrolling large bodies significantly increases code size).
+Does the loop contain function calls? (These often make unrolling less predictable or beneficial).
+Can you estimate the trip count? (Unrolling loops with very few iterations isn't usually worthwhile).
+Implement the Transformation Logic: This is the most complex part. Inside the unroll_loops method, for loops deemed suitable:
+Clone: Make deep copies of the basic blocks in the loop body (factor - 1 times). This includes copying the IR instructions within them.
+Adjust Instructions: Modify instructions in the cloned blocks. For example, if the original loop increments a := a + 1, the first cloned body needs to operate as if a was a+1, the second as if a was a+2, etc. This might involve substituting constants or adjusting temporary variables.
+Rewire CFG: Change the next and target_bb pointers of the original and cloned blocks to stitch them together in the unrolled sequence.
+Modify Loop Control: Adjust the condition check in the loop header and the final increment step to account for the unrolling factor.
+Cleanup Loop: Generate additional basic blocks (if necessary) to form a separate, smaller loop that handles any remaining iterations if the original trip count wasn't a multiple of the unrolling factor.
+Update CFG List: Add the new cloned blocks to the main CFG list (self).
