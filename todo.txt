@@ -1,5 +1,6 @@
 1.) Recheck IR for loop
 2.) Loop Unrolling
+3.) Strip Minning (no vectorization)
 
 Ask Professor for help with unrolling
 

@@ -3,6 +3,7 @@
 __doc__ = '''Control Flow Graph implementation
 Includes cfg construction, loop detection (stub for unrolling), and liveness analysis.'''
 
+import copy
 from functools import reduce
 import ir # Make sure ir is imported for type checks
 from support import get_node_list # Assuming support.py provides get_node_list
@@ -77,6 +78,41 @@ class BasicBlock(object):
             # Update overall KILL set and temporary kill set for block calculation
             self.kill.update(current_kills)
             temp_kill.update(current_kills)
+
+       # --- ADD THIS METHOD ---
+    def clone(self, new_label_suffix=""):
+        """
+        Creates a clone of the block for transformations.
+        Instructions are deep-copied. Labels are initially cleared or can be made unique.
+        Successors (next, target_bb) and preds are NOT cloned/set here; rewired externally.
+        """
+        print(f"      STRIP_MINE_CLONE_DEBUG: Cloning BB {id(self)} with suffix '{new_label_suffix}'")
+        cloned_instrs = []
+        for instr_orig in self.instrs:
+            try:
+                instr_clone = copy.deepcopy(instr_orig)
+                if hasattr(instr_clone, 'label') and instr_clone.label and instr_clone.label in self.labels:
+                    instr_clone.label = None # Remove block-level label from instruction copy
+                cloned_instrs.append(instr_clone)
+            except Exception as e:
+                print(f"      STRIP_MINE_CLONE_DEBUG: ERROR - Failed to deepcopy instruction {type(instr_orig)} in BB {id(self)}: {e}")
+                raise
+
+        new_labels_for_clone = []
+        if new_label_suffix:
+            for lbl_orig in self.labels:
+                if isinstance(lbl_orig, ir.Symbol) and hasattr(lbl_orig, 'stype') and lbl_orig.stype.name == 'label':
+                    new_label_obj = ir.TYPENAMES['label']()
+                    new_label_obj.name = f"{lbl_orig.name}_{new_label_suffix}"
+                    new_labels_for_clone.append(new_label_obj)
+                    print(f"        STRIP_MINE_CLONE_DEBUG: Cloned label {lbl_orig.name} to {new_label_obj.name}")
+        
+        cloned_bb = BasicBlock(instrs=cloned_instrs, labels=new_labels_for_clone)
+        # Cloned BB gets its own default gen/kill calculated in its __init__
+        # Successors and predecessors of clone will be set during CFG rewiring.
+        print(f"      STRIP_MINE_CLONE_DEBUG: Cloned BB {id(self)} into new BB {id(cloned_bb)}")
+        return cloned_bb
+    # --- END OF clone METHOD ---
 
     def __repr__(self):
         """Print in graphviz dot format (improved safety)."""
@@ -685,6 +721,213 @@ class CFG(list):
 
         print(f"   Loop detection complete. Found {len(loops_found)} unique loop header(s).")
         return loops_found
+    
+    # --- START: NEW STRIP MINING METHODS (SKELETONS) ---
+
+    def _analyze_loop_for_strip_mining(self, loop_info, default_strip_size):
+        header_bb = loop_info['header']
+        print(f"         STRIP_MINE_DEBUG: _analyze_loop_for_strip_mining for header BB {id(header_bb)}...")
+
+        # TODO: Implement robust analysis of loop_info (header, body_blocks, back_edges)
+        #       to find LCV, start_node_ir, end_node_ir, step_val.
+        #       Perform data dependence analysis for safety.
+        #       Check suitability heuristics (loop size, trip count, no complex ops).
+
+        # --- VERY TEMPORARY HEURISTIC for "for a := 10 to 20" ---
+        lcv_symbol = None
+        start_node_ir = None
+        end_node_ir = None
+        step_val = 1 # Assume
+
+        if hasattr(header_bb,'symtab'):
+            for sym in header_bb.symtab: # This symtab is for the *scope* of the loop.
+                if sym.name == 'a': # Looking for our test loop variable
+                    lcv_symbol = sym
+                    # FAKE values, assuming "for a := 10 to 20"
+                    # In reality, these come from the ForStat.init.expr and ForStat.cond.expr[2]
+                    start_node_ir = ir.Const(value=10, symtab=header_bb.symtab)
+                    end_node_ir = ir.Const(value=20, symtab=header_bb.symtab)
+                    print(f"            STRIP_MINE_DEBUG: (Heuristic) Found LCV '{lcv_symbol.name}'. Using faked start={start_node_ir.value}, end={end_node_ir.value}.")
+                    break
+        
+        if not lcv_symbol:
+            print(f"            STRIP_MINE_DEBUG: (Heuristic) Could not identify LCV for loop {id(header_bb)}. Marked unsuitable.")
+            return None # Not suitable by this basic heuristic
+
+        print(f"            STRIP_MINE_DEBUG: WARNING - Data dependence analysis NOT IMPLEMENTED.")
+        
+        original_exit_target_bb = None
+        if header_bb.instrs and isinstance(header_bb.instrs[-1], ir.BranchStat) and header_bb.instrs[-1].cond:
+            if header_bb.instrs[-1].negcond: original_exit_target_bb = header_bb.target_bb
+            else: original_exit_target_bb = header_bb.next
+        if not original_exit_target_bb:
+             print(f"            STRIP_MINE_DEBUG: WARNING - Could not determine original_exit_target_bb for header {id(header_bb)}")
+
+
+        return {
+            "suitable": True, # Assume suitable if heuristic passes
+            "lcv_symbol": lcv_symbol,
+            "start_node_ir": start_node_ir,
+            "end_node_ir": end_node_ir,
+            "step_val": step_val,
+            "strip_size": default_strip_size,
+            "original_header_bb": header_bb,
+            "original_latch_bb": loop_info['back_edges'][0][0] if loop_info['back_edges'] else None,
+            "original_exit_target_bb": original_exit_target_bb
+        }
+
+    def _generate_outer_loop_bbs(self, analysis_results):
+        original_header_bb = analysis_results['original_header_bb']
+        loop_symtab = original_header_bb.symtab if hasattr(original_header_bb, 'symtab') else None
+        if not loop_symtab:
+            print(f"      STRIP_MINE_DEBUG: ERROR (_generate_outer_loop_bbs) - No symtab for original_header_bb {id(original_header_bb)}")
+            return None
+        print(f"            STRIP_MINE_DEBUG: _generate_outer_loop_bbs for LCV '{analysis_results['lcv_symbol'].name}'...")
+        # TODO: Implement IR generation for outer loop preheader, header, calc_limit, latch, exit
+        #       This will create new BasicBlock objects and new ir.Instruction objects.
+        #       Remember to create new unique labels (e.g., using ir.TYPENAMES['label']()())
+        #       and add new temporary symbols to loop_symtab.
+        print(f"            STRIP_MINE_DEBUG: ***** Outer loop IR generation NOT FULLY IMPLEMENTED *****")
+        # Return a dictionary of the new BBs and key symbols
+        # For the structure to proceed, we need to return *something* that looks like BBs
+        dummy_label = ir.TYPENAMES['label']()()
+        return {
+            "preheader": BasicBlock(labels=[ir.TYPENAMES['label']()()], instrs=[ir.EmptyStat(symtab=loop_symtab)]), # Must have labels for rewiring
+            "header":    BasicBlock(labels=[ir.TYPENAMES['label']()()], instrs=[ir.EmptyStat(symtab=loop_symtab)]),
+            "calc_limit":BasicBlock(labels=[ir.TYPENAMES['label']()()], instrs=[ir.EmptyStat(symtab=loop_symtab)]),
+            "latch":     BasicBlock(labels=[ir.TYPENAMES['label']()()], instrs=[ir.EmptyStat(symtab=loop_symtab)]),
+            "exit":      BasicBlock(labels=[ir.TYPENAMES['label']()()], instrs=[ir.EmptyStat(symtab=loop_symtab)]),
+            "outer_lcv_sym": ir.Symbol("dummy_outer_lcv", ir.TYPENAMES['int'], alloct='reg'), # Must be symbols
+            "strip_limit_sym": ir.Symbol("dummy_strip_limit", ir.TYPENAMES['int'], alloct='reg'),
+            "labels": {"OuterPreH": dummy_label, "OuterH": dummy_label, "CalcLimit": dummy_label, "OuterL": dummy_label, "OuterE": dummy_label} # Need actual labels
+        }
+
+    def _modify_inner_loop_bbs(self, analysis_results, outer_loop_vars):
+        original_header_bb = analysis_results['original_header_bb']
+        # --- THIS IS WHERE THE PREVIOUS DEBUG BLOCK GOES ---
+        print(f"      STRIP_MINE_DEBUG: --- Entering _modify_inner_loop_bbs ---")
+        if original_header_bb is None:
+            print(f"      STRIP_MINE_DEBUG: ERROR - 'original_header_bb' is None in analysis_results!")
+            return False
+        print(f"      STRIP_MINE_DEBUG: original_header_bb ID: {id(original_header_bb)}, Type: {type(original_header_bb)}")
+        if not isinstance(original_header_bb, BasicBlock):
+            print(f"      STRIP_MINE_DEBUG: ERROR - original_header_bb is NOT a BasicBlock object! It is a {type(original_header_bb)}.")
+            return False
+        if not hasattr(original_header_bb, 'instrs') or not isinstance(original_header_bb.instrs, list):
+            print(f"      STRIP_MINE_DEBUG: ERROR - original_header_bb (ID: {id(original_header_bb)}) has no 'instrs' list or it's not a list.")
+            return False
+        print(f"      STRIP_MINE_DEBUG: original_header_bb.instrs IS a list with {len(original_header_bb.instrs)} elements.")
+        # --- END OF PREVIOUS DEBUG BLOCK ---
+
+        print(f"            STRIP_MINE_DEBUG: _modify_inner_loop_bbs for original header {id(original_header_bb)}...")
+        # TODO: Implement IR modification for inner loop:
+        #       1. Prepend `original_lcv_sym := Var(outer_lcv_sym)` to original_header_bb.instrs
+        #       2. Find the BinExpr for the condition in original_header_bb.instrs
+        #          and change its end-value operand to `Var(strip_limit_sym)`.
+        print(f"            STRIP_MINE_DEBUG: ***** Inner loop IR modification NOT FULLY IMPLEMENTED *****")
+        return True # Placeholder for success
+
+    def _rewire_cfg_for_strip_mine(self, analysis_results, outer_components, cfg_list_ref): # cfg_list_ref is self
+        original_header_bb = analysis_results['original_header_bb']
+        print(f"            STRIP_MINE_DEBUG: _rewire_cfg_for_strip_mine for original header {id(original_header_bb)}...")
+        # TODO: Implement complex CFG surgery:
+        #       1. Add new outer_components BBs to cfg_list_ref.
+        #       2. Redirect predecessors of original_header_bb to outer_components['preheader'].
+        #       3. Connect outer_components BBs: preheader -> header -> calc_limit.
+        #       4. Connect calc_limit.next -> original_header_bb (now inner loop header).
+        #       5. Redirect inner loop's exit branch (from original_header_bb) to outer_components['latch'].
+        #       6. Connect outer_components['latch'] to branch back to outer_components['header'].
+        #       7. Connect outer_components['header']'s false branch to outer_components['exit'].
+        #       8. Connect outer_components['exit'].next to analysis_results['original_exit_target_bb'].
+        print(f"            STRIP_MINE_DEBUG: ***** CFG rewiring NOT IMPLEMENTED *****")
+        return True # Placeholder for success
+
+    def strip_mine_loops(self, default_strip_size=4): # Smaller default for testing
+        print(f"\n--- Starting Loop Strip Mining Pass (Default Strip Size: {default_strip_size}) ---")
+        if default_strip_size < 1:
+            print("   Strip size must be >= 1. Skipping.")
+            print("--- Loop Strip Mining Pass Complete (No changes) ---")
+            return
+
+        all_initial_loops = self._find_loops()
+        if not all_initial_loops:
+            print("   No loops detected. Skipping strip mining.")
+            print("--- Loop Strip Mining Pass Complete (No changes) ---")
+            return
+
+        print(f"   Detected {len(all_initial_loops)} initial loop(s). Analyzing for strip mining...")
+        changes_made_to_cfg = False
+        
+        processed_headers_for_strip_mining = set() # To avoid processing a loop multiple times if structure changes
+
+        for loop_info in all_initial_loops:
+            if id(loop_info['header']) in processed_headers_for_strip_mining:
+                continue
+            if loop_info['header'] not in self: # Check if header still exists in CFG
+                print(f"      STRIP_MINE_DEBUG: Header {id(loop_info['header'])} no longer in CFG, skipping.")
+                continue
+
+            analysis_results = self._analyze_loop_for_strip_mining(loop_info, default_strip_size)
+
+            if not analysis_results or not analysis_results.get("suitable"):
+                print(f"      STRIP_MINE_DEBUG: Loop with header {id(loop_info['header'])} not suitable for strip mining.")
+                continue
+            
+            processed_headers_for_strip_mining.add(id(analysis_results['original_header_bb']))
+            print(f"      STRIP_MINE_DEBUG: Attempting to strip mine loop with header {id(analysis_results['original_header_bb'])}")
+
+            outer_loop_components = self._generate_outer_loop_bbs(analysis_results, self)
+            if not outer_loop_components:
+                print(f"      STRIP_MINE_DEBUG: FAILED to generate outer loop IR for {id(analysis_results['original_header_bb'])}.")
+                continue
+
+            if not self._modify_inner_loop_bbs(analysis_results, outer_loop_components):
+                print(f"      STRIP_MINE_DEBUG: FAILED to modify inner loop for {id(analysis_results['original_header_bb'])}.")
+                # Consider if newly generated outer_loop_components need to be removed from CFG here
+                continue
+
+            if not self._rewire_cfg_for_strip_mine(analysis_results, outer_loop_components, self):
+                print(f"      STRIP_MINE_DEBUG: FAILED to rewire CFG for {id(analysis_results['original_header_bb'])}.")
+                continue
+            
+            changes_made_to_cfg = True
+            print(f"      STRIP_MINE_DEBUG: Placeholder transformation applied for loop {id(analysis_results['original_header_bb'])}.")
+            # break # Useful for debugging one loop transformation at a time
+
+        if changes_made_to_cfg:
+            print("   STRIP_MINE_DEBUG: Strip mining transformation attempted. Rebuilding all CFG links.")
+            self._rebuild_all_cfg_links() # Crucial after any CFG structural changes
+            # self.print_cfg_to_dot("cfg_after_strip_mine.dot") # Visualize changes
+        else:
+            print("   STRIP_MINE_DEBUG: No suitable loops were strip-mined or transformation placeholder failed.")
+        print("--- Loop Strip Mining Pass Complete ---")
+
+    # --- END OF NEW STRIP MINING METHODS ---
+
+    def _rebuild_all_cfg_links(self): # Your existing implementation
+        print("   Rebuilding ALL CFG links (next, target_bb, preds)...")
+        label_to_block_map = {}
+        for bb_rb in self: bb_rb.preds = [] 
+        for bb_rb_l in self:
+            for label_item in bb_rb_l.labels:
+                if label_item in label_to_block_map: print(f"WARNING: Duplicate label '{label_item.name}'")
+                label_to_block_map[label_item] = bb_rb_l
+        for bb_rb_t in self:
+            bb_rb_t.target_bb = None
+            if bb_rb_t.instrs:
+                last_instr = bb_rb_t.instrs[-1]
+                bb_rb_t.target = last_instr.target if isinstance(last_instr, ir.BranchStat) and not last_instr.returns and last_instr.target else None
+            else: bb_rb_t.target = None
+            if bb_rb_t.target and bb_rb_t.target in label_to_block_map:
+                bb_rb_t.target_bb = label_to_block_map[bb_rb_t.target]
+            elif bb_rb_t.target: print(f"ERROR: Cannot re-resolve target '{bb_rb_t.target.name}' for BB {id(bb_rb_t)}.")
+            bb_rb_t.remove_useless_next()
+        for bb_rb_p in self:
+            for succ_bb_p in bb_rb_p.succ():
+                if succ_bb_p and hasattr(succ_bb_p, 'preds') and bb_rb_p not in succ_bb_p.preds:
+                     succ_bb_p.preds.append(bb_rb_p)
+        print("   CFG links rebuild complete.")
+
 
     def _is_loop_suitable_for_unrolling(self, loop_info):
         """ Placeholder for checking if a loop should be unrolled. """
@@ -738,3 +981,4 @@ class CFG(list):
              print("   No suitable loops were unrolled.")
 
         print("--- Loop Unrolling Pass Complete ---")
+    
