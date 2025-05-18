@@ -105,6 +105,9 @@ VAR arr[5]: char;
 var multid[5][5]: short;
 { New variables for loop tests }
 VAR i, j, k, m, n, p, q, sum, r;
+VAR sm_idx;                 { Loop counter for strip mining test (sm = strip_mine) }
+VAR sm_source_arr[128]: int; { Source array for strip mining test }
+VAR sm_dest_arr[128]: int;   { Destination array for strip mining test }
 
 {This is a comment. You can write anything you want in a comment}
 
@@ -241,9 +244,32 @@ BEGIN
     print x; { Print final x }
     print 88888; {Marker for end 8}
 
+  { === Test 9: Simpler Loop for Strip Mining === }
+  { Assume sm_source_arr is pre-initialized or we don't care about its initial values for the transformation test }
+  { The transformation itself shouldn't depend on the values, only the structure. }
+  { For correctness testing AFTER transformation, you'd initialize it. }
+
+    print 999990; { Marker for strip mining test start }
+    sm_idx := 0; { Initialize loop counter for the main test loop }
+    for sm_idx := 0 to 127 do  { Iterate 128 times }
+    begin
+        sm_dest_arr[sm_idx] := sm_source_arr[sm_idx] + sm_idx; { Example: A[i] = B[i] + i }
+        { Optional: print sm_idx; print sm_dest_arr[sm_idx]; }
+    end;
+
+  { To verify correctness, you would ideally print some elements of sm_dest_arr or a checksum. }
+  { For now, just ensuring it runs is the first step. }
+    if 127 >= 0 then begin { Basic check to print at least one value if loop ran }
+      print 76543; { Marker indicating we will print a dest array value }
+      print sm_dest_arr[0];   { Print first element }
+      print sm_dest_arr[64];  { Print a middle element }
+      print sm_dest_arr[127]; { Print last element }
+    end;
+    print 888880; { Marker for strip mining test end }
+
 { === Added Loop Tests End === }
 
-END.'''# <<< This is the final END of the main program block
+END.'''
 
 
 if __name__ == '__main__':
