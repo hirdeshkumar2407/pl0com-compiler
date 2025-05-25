@@ -53,10 +53,10 @@ def compile_program(text):
     cfg.print_cfg_to_dot("cfg_initial.dot")
 
     # --- OPTIMIZATION: Strip Mining ---
-    #print("\n--- OPTIMIZATION: Attempting Loop Strip Mining ---")
-    #cfg.strip_mine_loops(default_strip_size=4) # Call strip mining
-    #print("\n--- CFG After Attempting Strip Mining ---")
-    #cfg.print_cfg_to_dot("cfg_after_strip_mining_attempt.dot")
+    print("\n--- OPTIMIZATION: Attempting Loop Strip Mining ---")
+    cfg.strip_mine_loops(default_strip_size=4) # Call strip mining
+    print("\n--- CFG After Attempting Strip Mining ---")
+    cfg.print_cfg_to_dot("cfg_after_strip_mining_attempt.dot")
     # --- End Strip Mining ---
 
     # --- OPTIMIZATION: Loop Unrolling (Placeholder) ---
