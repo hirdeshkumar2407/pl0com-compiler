@@ -3,159 +3,159 @@ digraph G {
   node [shape=box, fontname="Courier New", fontsize=10];
   edge [fontname="Courier New", fontsize=9];
 
-  // BasicBlock ID for CFG list: 139137684873424
-  BB_139137684873424 [label="reg int t0 <- 1\nreg int t1 <- minus reg int t0\nglobal int x; _g_x: def byte 4 <- reg int t1\nread reg int t2\nglobal int x; _g_x: def byte 4 <- reg int t2\nreg int t8 <- global int x; _g_x: def byte 4\nreg int t9 <- 100\nreg int32_t t10 <- reg int t8 gtr reg int t9\nbranch on reg int32_t t10 to auto label label2"];
-BB_139137684873424 -> BB_139137685196464 [style=dashed,label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685194064
-  BB_139137685194064 [label="reg int t7 <- global int x; _g_x: def byte 4\nprint reg int t7\nbranch  to auto label label1"];
-BB_139137685194064 -> BB_139137685196512 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685196464
-  BB_139137685196464 [label="label2:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t3 <- global int x; _g_x: def byte 4\nreg int t5 <- minus reg int t3\nprint reg int t5"];
-BB_139137685196464 -> BB_139137685196512 [label="set()"];
-  // BasicBlock ID for CFG list: 139137685196512
-  BB_139137685196512 [label="label1:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t11 <- 1\nglobal int x; _g_x: def byte 4 <- reg int t11"];
-BB_139137685196512 -> BB_139137685196560 [label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685196560
-  BB_139137685196560 [label="label3:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t17 <- global int x; _g_x: def byte 4\nreg int t18 <- 10\nreg int32_t t19 <- reg int t17 leq reg int t18\nbranch on not reg int32_t t19 to auto label label4"];
-BB_139137685196560 -> BB_139137685194208 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685194160
-  BB_139137685194160 [label="call  to auto function square"];
-BB_139137685194160 -> exit_global [label="set()"];
+  // BasicBlock ID for CFG list: 138571680132928
+  BB_138571680132928 [label="reg int t0 <- 1\nreg int t1 <- minus reg int t0\nglobal int x; _g_x: def byte 4 <- reg int t1\nread reg int t2\nglobal int x; _g_x: def byte 4 <- reg int t2\nreg int t6 <- global int x; _g_x: def byte 4\nreg int t7 <- 100\nreg int32_t t8 <- reg int t6 gtr reg int t7\nbranch on reg int32_t t8 to auto label label2"];
+BB_138571680132928 -> BB_138571680132880 [style=dashed,label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680132832
+  BB_138571680132832 [label="reg int t10 <- global int x; _g_x: def byte 4\nprint reg int t10\nbranch  to auto label label1"];
+BB_138571680132832 -> BB_138571680130720 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680132880
+  BB_138571680132880 [label="label2:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t3 <- global int x; _g_x: def byte 4\nreg int t5 <- minus reg int t3\nprint reg int t5"];
+BB_138571680132880 -> BB_138571680130720 [label="set()"];
+  // BasicBlock ID for CFG list: 138571680130720
+  BB_138571680130720 [label="label1:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t11 <- 1\nglobal int x; _g_x: def byte 4 <- reg int t11"];
+BB_138571680130720 -> BB_138571680130144 [label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680130144
+  BB_138571680130144 [label="label3:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t17 <- global int x; _g_x: def byte 4\nreg int t18 <- 10\nreg int32_t t19 <- reg int t17 leq reg int t18\nbranch on not reg int32_t t19 to auto label label4"];
+BB_138571680130144 -> BB_138571680130672 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680130192
+  BB_138571680130192 [label="call  to auto function square"];
+BB_138571680130192 -> exit_global [label="set()"];
   exit_global [shape=ellipse, label="Return/Exit"];
-  // BasicBlock ID for CFG list: 139137685193728
-  BB_139137685193728 [label="reg int t12 <- global int x; _g_x: def byte 4\nreg int t13 <- 1\nreg int32_t t14 <- reg int t12 plus reg int t13\nglobal int x; _g_x: def byte 4 <- reg int32_t t14\nreg int t16 <- global int squ; _g_squ: def byte 4\nprint reg int t16\nbranch  to auto label label3"];
-BB_139137685193728 -> BB_139137685196560 [style=dashed,label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685194208
-  BB_139137685194208 [label="label4:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t20 <- 101\nglobal int x; _g_x: def byte 4 <- reg int t20"];
-BB_139137685194208 -> BB_139137685193824 [label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685193824
-  BB_139137685193824 [label="label5:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t44 <- global int x; _g_x: def byte 4\nreg int t45 <- 105\nreg int32_t t46 <- reg int t44 leq reg int t45\nbranch on not reg int32_t t46 to auto label label6"];
-BB_139137685193824 -> BB_139137685207648 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685193776
-  BB_139137685193776 [label="reg int t26 <- global int x; _g_x: def byte 4\nreg int t21 <- global int x; _g_x: def byte 4\nreg int t22 <- 100\nreg int32_t t23 <- reg int t21 minus reg int t22\nreg int t24 <- 1\nreg int32_t t25 <- reg int32_t t23 times reg int t24\nreg &char t27 <- &(global char[5] arr; _g_arr: def byte 5)\nreg &char t28 <- reg &char t27 plus reg int32_t t25\n[reg &char t28] <- reg int t26\nreg int t29 <- global int x; _g_x: def byte 4\nreg int t30 <- 100\nreg int32_t t31 <- reg int t29 minus reg int t30\nreg int t32 <- 1\nreg int32_t t34 <- reg int32_t t31 times reg int t32\nreg &char t39 <- &(global char[5] arr; _g_arr: def byte 5)\nreg &char t40 <- reg &char t39 plus reg int32_t t34\nreg char t38 <- [reg &char t40]\nprint reg char t38\nreg int t41 <- global int x; _g_x: def byte 4\nreg int t42 <- 1\nreg int32_t t43 <- reg int t41 plus reg int t42\nglobal int x; _g_x: def byte 4 <- reg int32_t t43\nbranch  to auto label label5"];
-BB_139137685193776 -> BB_139137685193824 [style=dashed,label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685207648
-  BB_139137685207648 [label="label6:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t47 <- 1\nglobal int x; _g_x: def byte 4 <- reg int t47\nreg int t48 <- 1\nglobal int y; _g_y: def byte 4 <- reg int t48"];
-BB_139137685207648 -> BB_139137685207744 [label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685207744
-  BB_139137685207744 [label="label9:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t88 <- global int x; _g_x: def byte 4\nreg int t89 <- 5\nreg int32_t t90 <- reg int t88 leq reg int t89\nbranch on not reg int32_t t90 to auto label label10"];
-BB_139137685207744 -> BB_139137685207360 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685207312
-  BB_139137685207312 [label="label7:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t85 <- global int y; _g_y: def byte 4\nreg int t86 <- 5\nreg int32_t t87 <- reg int t85 leq reg int t86\nbranch on not reg int32_t t87 to auto label label8"];
-BB_139137685207312 -> BB_139137685207408 [style=dashed,label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685207792
-  BB_139137685207792 [label="reg int t56 <- global int x; _g_x: def byte 4\nreg int t57 <- 1\nreg int32_t t59 <- reg int t56 times reg int t57\nreg &char t61 <- &(global char[5] arr; _g_arr: def byte 5)\nreg &char t62 <- reg &char t61 plus reg int32_t t59\nreg char t60 <- [reg &char t62]\nreg int t49 <- global int x; _g_x: def byte 4\nreg int t50 <- 10\nreg int32_t t51 <- reg int t49 times reg int t50\nreg int t52 <- global int y; _g_y: def byte 4\nreg int t53 <- 2\nreg int32_t t54 <- reg int t52 times reg int t53\nreg int32_t t55 <- reg int32_t t51 plus reg int32_t t54\nreg &short t63 <- &(global short[5, 5] multid; _g_multid: def byte 50)\nreg &short t64 <- reg &short t63 plus reg int32_t t55\n[reg &short t64] <- reg char t60\nreg int t65 <- global int x; _g_x: def byte 4\nreg int t66 <- 10\nreg int32_t t67 <- reg int t65 times reg int t66\nreg int t68 <- global int y; _g_y: def byte 4\nreg int t69 <- 2\nreg int32_t t70 <- reg int t68 times reg int t69\nreg int32_t t72 <- reg int32_t t67 plus reg int32_t t70\nreg &short t77 <- &(global short[5, 5] multid; _g_multid: def byte 50)\nreg &short t78 <- reg &short t77 plus reg int32_t t72\nreg short t76 <- [reg &short t78]\nprint reg short t76\nreg int t79 <- global int x; _g_x: def byte 4\nreg int t80 <- 1\nreg int32_t t81 <- reg int t79 plus reg int t80\nglobal int x; _g_x: def byte 4 <- reg int32_t t81\nreg int t82 <- global int y; _g_y: def byte 4\nreg int t83 <- 1\nreg int32_t t84 <- reg int t82 plus reg int t83\nglobal int y; _g_y: def byte 4 <- reg int32_t t84\nbranch  to auto label label7"];
-BB_139137685207792 -> BB_139137685207312 [style=dashed,label="{global int y; _g_y: def byte 4, global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685207408
-  BB_139137685207408 [label="label8:\n[Err Repr <class 'ir.EmptyStat'>: ]\nbranch  to auto label label9"];
-BB_139137685207408 -> BB_139137685207744 [style=dashed,label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685207360
-  BB_139137685207360 [label="label10:\n[Err Repr <class 'ir.EmptyStat'>: ]\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685207360 -> BB_139137685234976 [label="{auto int a}"];
-  // BasicBlock ID for CFG list: 139137685234976
-  BB_139137685234976 [label="label11:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t93 <- auto int a\nreg int t94 <- 20\nreg int32_t t95 <- reg int t93 leq reg int t94\nbranch on not reg int32_t t95 to auto label label13"];
-BB_139137685234976 -> BB_139137685237616 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685235072
-  BB_139137685235072 [label="reg int t92 <- auto int a\nprint reg int t92\nreg int t96 <- auto int a\nreg int t97 <- 1\nreg int32_t t98 <- reg int t96 plus reg int t97\nauto int a <- reg int32_t t98\nbranch  to auto label label11"];
-BB_139137685235072 -> BB_139137685234976 [style=dashed,label="{auto int a}"];
-  // BasicBlock ID for CFG list: 139137685237616
-  BB_139137685237616 [label="label13:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t99 <- 10\nglobal int i; _g_i: def byte 4 <- reg int t99\nreg int t101 <- 99991\nprint reg int t101\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685237616 -> BB_139137685237712 [label="{auto int i}"];
-  // BasicBlock ID for CFG list: 139137685237712
-  BB_139137685237712 [label="label14:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t104 <- auto int i\nreg int t105 <- 15\nreg int32_t t106 <- reg int t104 leq reg int t105\nbranch on not reg int32_t t106 to auto label label16"];
-BB_139137685237712 -> BB_139137685237664 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685237280
-  BB_139137685237280 [label="reg int t103 <- global int i; _g_i: def byte 4\nprint reg int t103\nreg int t107 <- auto int i\nreg int t108 <- 1\nreg int32_t t109 <- reg int t107 plus reg int t108\nauto int i <- reg int32_t t109\nbranch  to auto label label14"];
-BB_139137685237280 -> BB_139137685237712 [style=dashed,label="{auto int i}"];
-  // BasicBlock ID for CFG list: 139137685237664
-  BB_139137685237664 [label="label16:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t111 <- 88881\nprint reg int t111\nreg int t113 <- 99992\nprint reg int t113\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685237664 -> BB_139137685237328 [label="{auto int j}"];
-  // BasicBlock ID for CFG list: 139137685237328
-  BB_139137685237328 [label="label17:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t116 <- auto int j\nreg int t117 <- 5\nreg int32_t t118 <- reg int t116 leq reg int t117\nbranch on not reg int32_t t118 to auto label label19"];
-BB_139137685237328 -> BB_139137685236176 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685237376
-  BB_139137685237376 [label="reg int t115 <- global int j; _g_j: def byte 4\nprint reg int t115\nreg int t119 <- auto int j\nreg int t120 <- 1\nreg int32_t t121 <- reg int t119 plus reg int t120\nauto int j <- reg int32_t t121\nbranch  to auto label label17"];
-BB_139137685237376 -> BB_139137685237328 [style=dashed,label="{auto int j}"];
-  // BasicBlock ID for CFG list: 139137685236176
-  BB_139137685236176 [label="label19:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t123 <- 88882\nprint reg int t123\nreg int t125 <- 99993\nprint reg int t125\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685236176 -> BB_139137685236224 [label="{auto int k}"];
-  // BasicBlock ID for CFG list: 139137685236224
-  BB_139137685236224 [label="label20:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t130 <- auto int k\nreg int t131 <- 5\nreg int32_t t132 <- reg int t130 leq reg int t131\nbranch on not reg int32_t t132 to auto label label22"];
-BB_139137685236224 -> BB_139137685235792 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685235408
-  BB_139137685235408 [label="reg int t127 <- 77777\nprint reg int t127\nreg int t129 <- global int k; _g_k: def byte 4\nprint reg int t129\nreg int t133 <- auto int k\nreg int t134 <- 1\nreg int32_t t135 <- reg int t133 plus reg int t134\nauto int k <- reg int32_t t135\nbranch  to auto label label20"];
-BB_139137685235408 -> BB_139137685236224 [style=dashed,label="{auto int k}"];
-  // BasicBlock ID for CFG list: 139137685235792
-  BB_139137685235792 [label="label22:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t137 <- 88883\nprint reg int t137\nreg int t139 <- 99994\nprint reg int t139\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685235792 -> BB_139137685235840 [label="{auto int m}"];
-  // BasicBlock ID for CFG list: 139137685235840
-  BB_139137685235840 [label="label23:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t142 <- auto int m\nreg int t143 <- 6\nreg int32_t t144 <- reg int t142 leq reg int t143\nbranch on not reg int32_t t144 to auto label label25"];
-BB_139137685235840 -> BB_139137685241712 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685235744
-  BB_139137685235744 [label="reg int t141 <- global int m; _g_m: def byte 4\nprint reg int t141\nreg int t145 <- auto int m\nreg int t146 <- 1\nreg int32_t t147 <- reg int t145 plus reg int t146\nauto int m <- reg int32_t t147\nbranch  to auto label label23"];
-BB_139137685235744 -> BB_139137685235840 [style=dashed,label="{auto int m}"];
-  // BasicBlock ID for CFG list: 139137685241712
-  BB_139137685241712 [label="label25:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t149 <- 88884\nprint reg int t149\nreg int t151 <- 99995\nprint reg int t151\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685241712 -> BB_139137685241808 [label="{auto int n}"];
-  // BasicBlock ID for CFG list: 139137685241808
-  BB_139137685241808 [label="label26:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t154 <- auto int n\nreg int t155 <- 7\nreg int32_t t156 <- reg int t154 leq reg int t155\nbranch on not reg int32_t t156 to auto label label28"];
-BB_139137685241808 -> BB_139137685240944 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685240416
-  BB_139137685240416 [label="reg int t153 <- global int n; _g_n: def byte 4\nprint reg int t153\nreg int t157 <- auto int n\nreg int t158 <- 1\nreg int32_t t159 <- reg int t157 plus reg int t158\nauto int n <- reg int32_t t159\nbranch  to auto label label26"];
-BB_139137685240416 -> BB_139137685241808 [style=dashed,label="{auto int n}"];
-  // BasicBlock ID for CFG list: 139137685240944
-  BB_139137685240944 [label="label28:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t161 <- 88885\nprint reg int t161\nreg int t163 <- 99996\nprint reg int t163\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685240944 -> BB_139137685241760 [label="{auto int p}"];
-  // BasicBlock ID for CFG list: 139137685241760
-  BB_139137685241760 [label="label29:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t166 <- auto int p\nreg int t167 <- 12\nreg int32_t t168 <- reg int t166 leq reg int t167\nbranch on not reg int32_t t168 to auto label label31"];
-BB_139137685241760 -> BB_139137685241376 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685240992
-  BB_139137685240992 [label="reg int t165 <- global int p; _g_p: def byte 4\nprint reg int t165\nreg int t169 <- auto int p\nreg int t170 <- 1\nreg int32_t t171 <- reg int t169 plus reg int t170\nauto int p <- reg int32_t t171\nbranch  to auto label label29"];
-BB_139137685240992 -> BB_139137685241760 [style=dashed,label="{auto int p}"];
-  // BasicBlock ID for CFG list: 139137685241376
-  BB_139137685241376 [label="label31:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t173 <- 88886\nprint reg int t173\nreg int t174 <- 0\nglobal int sum; _g_sum: def byte 4 <- reg int t174\nreg int t176 <- 99997\nprint reg int t176\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685241376 -> BB_139137685241472 [label="{auto int q, global int sum; _g_sum: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685241472
-  BB_139137685241472 [label="label32:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t184 <- auto int q\nreg int t185 <- 5\nreg int32_t t186 <- reg int t184 leq reg int t185\nbranch on not reg int32_t t186 to auto label label34"];
-BB_139137685241472 -> BB_139137685241424 [style=dashed,label="{global int sum; _g_sum: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685240704
-  BB_139137685240704 [label="reg int t177 <- global int sum; _g_sum: def byte 4\nreg int t178 <- global int q; _g_q: def byte 4\nreg int32_t t179 <- reg int t177 plus reg int t178\nglobal int sum; _g_sum: def byte 4 <- reg int32_t t179\nreg int t181 <- global int q; _g_q: def byte 4\nprint reg int t181\nreg int t183 <- global int sum; _g_sum: def byte 4\nprint reg int t183\nreg int t187 <- auto int q\nreg int t188 <- 1\nreg int32_t t189 <- reg int t187 plus reg int t188\nauto int q <- reg int32_t t189\nbranch  to auto label label32"];
-BB_139137685240704 -> BB_139137685241472 [style=dashed,label="{auto int q, global int sum; _g_sum: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685241424
-  BB_139137685241424 [label="label34:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t191 <- global int sum; _g_sum: def byte 4\nprint reg int t191\nreg int t193 <- 88887\nprint reg int t193\nreg int t194 <- 100\nglobal int x; _g_x: def byte 4 <- reg int t194\nreg int t196 <- 99998\nprint reg int t196\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685241424 -> BB_139137685240176 [label="{global int x; _g_x: def byte 4, auto int r}"];
-  // BasicBlock ID for CFG list: 139137685240176
-  BB_139137685240176 [label="label35:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t202 <- auto int r\nreg int t203 <- 3\nreg int32_t t204 <- reg int t202 leq reg int t203\nbranch on not reg int32_t t204 to auto label label37"];
-BB_139137685240176 -> BB_139137685240224 [style=dashed,label="{global int x; _g_x: def byte 4}"];
-  // BasicBlock ID for CFG list: 139137685239984
-  BB_139137685239984 [label="reg int t197 <- global int x; _g_x: def byte 4\nreg int t198 <- global int r; _g_r: def byte 4\nreg int32_t t199 <- reg int t197 plus reg int t198\nglobal int x; _g_x: def byte 4 <- reg int32_t t199\nreg int t201 <- global int x; _g_x: def byte 4\nprint reg int t201\nreg int t205 <- auto int r\nreg int t206 <- 1\nreg int32_t t207 <- reg int t205 plus reg int t206\nauto int r <- reg int32_t t207\nbranch  to auto label label35"];
-BB_139137685239984 -> BB_139137685240176 [style=dashed,label="{global int x; _g_x: def byte 4, auto int r}"];
-  // BasicBlock ID for CFG list: 139137685240224
-  BB_139137685240224 [label="label37:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t209 <- global int x; _g_x: def byte 4\nprint reg int t209\nreg int t211 <- 88888\nprint reg int t211\nreg int t213 <- 999990\nprint reg int t213\nreg int t214 <- 0\nglobal int sm_idx; _g_sm_idx: def byte 4 <- reg int t214\n[Err Repr <class 'ir.AssignStat'>: ]"];
-BB_139137685240224 -> BB_139137685239648 [label="{auto int sm_idx}"];
-  // BasicBlock ID for CFG list: 139137685239648
-  BB_139137685239648 [label="label38:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t229 <- auto int sm_idx\nreg int t230 <- 127\nreg int32_t t231 <- reg int t229 leq reg int t230\nbranch on not reg int32_t t231 to auto label label40"];
-BB_139137685239648 -> BB_139137685238160 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685239696
-  BB_139137685239696 [label="reg int t218 <- global int sm_idx; _g_sm_idx: def byte 4\nreg int t219 <- 4\nreg int32_t t221 <- reg int t218 times reg int t219\nreg &int t223 <- &(global int[128] sm_source_arr; _g_sm_source_arr: def byte 512)\nreg &int t224 <- reg &int t223 plus reg int32_t t221\nreg int t222 <- [reg &int t224]\nreg int t225 <- global int sm_idx; _g_sm_idx: def byte 4\nreg int32_t t226 <- reg int t222 plus reg int t225\nreg int t215 <- global int sm_idx; _g_sm_idx: def byte 4\nreg int t216 <- 4\nreg int32_t t217 <- reg int t215 times reg int t216\nreg &int t227 <- &(global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512)\nreg &int t228 <- reg &int t227 plus reg int32_t t217\n[reg &int t228] <- reg int32_t t226\nreg int t232 <- auto int sm_idx\nreg int t233 <- 1\nreg int32_t t234 <- reg int t232 plus reg int t233\nauto int sm_idx <- reg int32_t t234\nbranch  to auto label label38"];
-BB_139137685239696 -> BB_139137685239648 [style=dashed,label="{auto int sm_idx}"];
-  // BasicBlock ID for CFG list: 139137685238160
-  BB_139137685238160 [label="label40:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t267 <- 127\nreg int t268 <- 0\nreg int32_t t269 <- reg int t267 geq reg int t268\nbranch on not reg int32_t t269 to auto label label41"];
-BB_139137685238160 -> BB_139137684876880 [style=dashed,label="set()"];
-  // BasicBlock ID for CFG list: 139137685239456
-  BB_139137685239456 [label="reg int t236 <- 76543\nprint reg int t236\nreg int t237 <- 0\nreg int t238 <- 4\nreg int32_t t240 <- reg int t237 times reg int t238\nreg &int t245 <- &(global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512)\nreg &int t246 <- reg &int t245 plus reg int32_t t240\nreg int t244 <- [reg &int t246]\nprint reg int t244\nreg int t247 <- 64\nreg int t248 <- 4\nreg int32_t t250 <- reg int t247 times reg int t248\nreg &int t255 <- &(global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512)\nreg &int t256 <- reg &int t255 plus reg int32_t t250\nreg int t254 <- [reg &int t256]\nprint reg int t254\nreg int t257 <- 127\nreg int t258 <- 4\nreg int32_t t260 <- reg int t257 times reg int t258\nreg &int t265 <- &(global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512)\nreg &int t266 <- reg &int t265 plus reg int32_t t260\nreg int t264 <- [reg &int t266]\nprint reg int t264"];
-BB_139137685239456 -> BB_139137684876880 [label="set()"];
-  // BasicBlock ID for CFG list: 139137684876880
-  BB_139137684876880 [label="label41:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t271 <- 888880\nprint reg int t271"];
-BB_139137684876880 -> exit_global [label="set()"];
-  // BasicBlock ID for CFG list: 139137685238064
-  BB_139137685238064 [label="reg int t272 <- 1234\nauto int test; _l_square_test: fp + (-4) [def byte 4] <- reg int t272\nreg int t273 <- global int x; _g_x: def byte 4\nreg int t274 <- global int x; _g_x: def byte 4\nreg int32_t t275 <- reg int t273 times reg int t274\nglobal int squ; _g_squ: def byte 4 <- reg int32_t t275"];
-BB_139137685238064 -> exit_Func_square [label="{global int y; _g_y: def byte 4, global int p; _g_p: def byte 4, global int i; _g_i: def byte 4, global int q; _g_q: def byte 4, global int[128] sm_source_arr; _g_sm_source_arr: def byte 512, global int squ; _g_squ: def byte 4, global int j; _g_j: def byte 4, global int sum; _g_sum: def byte 4, global int k; _g_k: def byte 4, global int r; _g_r: def byte 4, global int x; _g_x: def byte 4, global int m; _g_m: def byte 4, global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512, global int sm_idx; _g_sm_idx: def byte 4, global int n; _g_n: def byte 4, global short[5, 5] multid; _g_multid: def byte 50, global char[5] arr; _g_arr: def byte 5}"];
+  // BasicBlock ID for CFG list: 138571680130048
+  BB_138571680130048 [label="reg int t12 <- global int x; _g_x: def byte 4\nreg int t13 <- 1\nreg int32_t t14 <- reg int t12 plus reg int t13\nglobal int x; _g_x: def byte 4 <- reg int32_t t14\nreg int t16 <- global int squ; _g_squ: def byte 4\nprint reg int t16\nbranch  to auto label label3"];
+BB_138571680130048 -> BB_138571680130144 [style=dashed,label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680130672
+  BB_138571680130672 [label="label4:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t20 <- 101\nglobal int x; _g_x: def byte 4 <- reg int t20"];
+BB_138571680130672 -> BB_138571680149712 [label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680149712
+  BB_138571680149712 [label="label5:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t44 <- global int x; _g_x: def byte 4\nreg int t45 <- 105\nreg int32_t t46 <- reg int t44 leq reg int t45\nbranch on not reg int32_t t46 to auto label label6"];
+BB_138571680149712 -> BB_138571680151824 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680151872
+  BB_138571680151872 [label="reg int t21 <- global int x; _g_x: def byte 4\nreg int t22 <- global int x; _g_x: def byte 4\nreg int t23 <- 100\nreg int32_t t24 <- reg int t22 minus reg int t23\nreg int t25 <- 1\nreg int32_t t26 <- reg int32_t t24 times reg int t25\nreg &char t27 <- &(global char[5] arr; _g_arr: def byte 5)\nreg &char t28 <- reg &char t27 plus reg int32_t t26\n[reg &char t28] <- reg int t21\nreg int t29 <- global int x; _g_x: def byte 4\nreg int t30 <- 100\nreg int32_t t31 <- reg int t29 minus reg int t30\nreg int t32 <- 1\nreg int32_t t34 <- reg int32_t t31 times reg int t32\nreg &char t39 <- &(global char[5] arr; _g_arr: def byte 5)\nreg &char t40 <- reg &char t39 plus reg int32_t t34\nreg char t38 <- [reg &char t40]\nprint reg char t38\nreg int t41 <- global int x; _g_x: def byte 4\nreg int t42 <- 1\nreg int32_t t43 <- reg int t41 plus reg int t42\nglobal int x; _g_x: def byte 4 <- reg int32_t t43\nbranch  to auto label label5"];
+BB_138571680151872 -> BB_138571680149712 [style=dashed,label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680151824
+  BB_138571680151824 [label="label6:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t47 <- 1\nglobal int x; _g_x: def byte 4 <- reg int t47\nreg int t48 <- 1\nglobal int y; _g_y: def byte 4 <- reg int t48"];
+BB_138571680151824 -> BB_138571680151920 [label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680151920
+  BB_138571680151920 [label="label9:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t88 <- global int x; _g_x: def byte 4\nreg int t89 <- 5\nreg int32_t t90 <- reg int t88 leq reg int t89\nbranch on not reg int32_t t90 to auto label label10"];
+BB_138571680151920 -> BB_138571680152448 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680152352
+  BB_138571680152352 [label="label7:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t85 <- global int y; _g_y: def byte 4\nreg int t86 <- 5\nreg int32_t t87 <- reg int t85 leq reg int t86\nbranch on not reg int32_t t87 to auto label label8"];
+BB_138571680152352 -> BB_138571680152496 [style=dashed,label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680151968
+  BB_138571680151968 [label="reg int t49 <- global int x; _g_x: def byte 4\nreg int t50 <- 1\nreg int32_t t52 <- reg int t49 times reg int t50\nreg &char t54 <- &(global char[5] arr; _g_arr: def byte 5)\nreg &char t55 <- reg &char t54 plus reg int32_t t52\nreg char t53 <- [reg &char t55]\nreg int t56 <- global int x; _g_x: def byte 4\nreg int t57 <- 10\nreg int32_t t58 <- reg int t56 times reg int t57\nreg int t59 <- global int y; _g_y: def byte 4\nreg int t60 <- 2\nreg int32_t t61 <- reg int t59 times reg int t60\nreg int32_t t62 <- reg int32_t t58 plus reg int32_t t61\nreg &short t63 <- &(global short[5, 5] multid; _g_multid: def byte 50)\nreg &short t64 <- reg &short t63 plus reg int32_t t62\n[reg &short t64] <- reg char t53\nreg int t65 <- global int x; _g_x: def byte 4\nreg int t66 <- 10\nreg int32_t t67 <- reg int t65 times reg int t66\nreg int t68 <- global int y; _g_y: def byte 4\nreg int t69 <- 2\nreg int32_t t70 <- reg int t68 times reg int t69\nreg int32_t t72 <- reg int32_t t67 plus reg int32_t t70\nreg &short t77 <- &(global short[5, 5] multid; _g_multid: def byte 50)\nreg &short t78 <- reg &short t77 plus reg int32_t t72\nreg short t76 <- [reg &short t78]\nprint reg short t76\nreg int t79 <- global int x; _g_x: def byte 4\nreg int t80 <- 1\nreg int32_t t81 <- reg int t79 plus reg int t80\nglobal int x; _g_x: def byte 4 <- reg int32_t t81\nreg int t82 <- global int y; _g_y: def byte 4\nreg int t83 <- 1\nreg int32_t t84 <- reg int t82 plus reg int t83\nglobal int y; _g_y: def byte 4 <- reg int32_t t84\nbranch  to auto label label7"];
+BB_138571680151968 -> BB_138571680152352 [style=dashed,label="{global int x; _g_x: def byte 4, global int y; _g_y: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680152496
+  BB_138571680152496 [label="label8:\n[Err Repr <class 'ir.EmptyStat'>: ]\nbranch  to auto label label9"];
+BB_138571680152496 -> BB_138571680151920 [style=dashed,label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680152448
+  BB_138571680152448 [label="label10:\n[Err Repr <class 'ir.EmptyStat'>: ]\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680152448 -> BB_138571680163152 [label="{auto int a}"];
+  // BasicBlock ID for CFG list: 138571680163152
+  BB_138571680163152 [label="label11:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t96 <- auto int a\nreg int t97 <- 20\nreg int32_t t98 <- reg int t96 leq reg int t97\nbranch on not reg int32_t t98 to auto label label13"];
+BB_138571680163152 -> BB_138571680165408 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680163248
+  BB_138571680163248 [label="reg int t92 <- auto int a\nprint reg int t92\nreg int t93 <- auto int a\nreg int t94 <- 1\nreg int32_t t95 <- reg int t93 plus reg int t94\nauto int a <- reg int32_t t95\nbranch  to auto label label11"];
+BB_138571680163248 -> BB_138571680163152 [style=dashed,label="{auto int a}"];
+  // BasicBlock ID for CFG list: 138571680165408
+  BB_138571680165408 [label="label13:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t99 <- 10\nglobal int i; _g_i: def byte 4 <- reg int t99\nreg int t101 <- 99991\nprint reg int t101\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680165408 -> BB_138571680165456 [label="{auto int i}"];
+  // BasicBlock ID for CFG list: 138571680165456
+  BB_138571680165456 [label="label14:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t107 <- auto int i\nreg int t108 <- 15\nreg int32_t t109 <- reg int t107 leq reg int t108\nbranch on not reg int32_t t109 to auto label label16"];
+BB_138571680165456 -> BB_138571680165504 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680162960
+  BB_138571680162960 [label="reg int t103 <- global int i; _g_i: def byte 4\nprint reg int t103\nreg int t104 <- auto int i\nreg int t105 <- 1\nreg int32_t t106 <- reg int t104 plus reg int t105\nauto int i <- reg int32_t t106\nbranch  to auto label label14"];
+BB_138571680162960 -> BB_138571680165456 [style=dashed,label="{auto int i}"];
+  // BasicBlock ID for CFG list: 138571680165504
+  BB_138571680165504 [label="label16:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t111 <- 88881\nprint reg int t111\nreg int t113 <- 99992\nprint reg int t113\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680165504 -> BB_138571680165552 [label="{auto int j}"];
+  // BasicBlock ID for CFG list: 138571680165552
+  BB_138571680165552 [label="label17:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t119 <- auto int j\nreg int t120 <- 5\nreg int32_t t121 <- reg int t119 leq reg int t120\nbranch on not reg int32_t t121 to auto label label19"];
+BB_138571680165552 -> BB_138571680163968 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680163488
+  BB_138571680163488 [label="reg int t115 <- global int j; _g_j: def byte 4\nprint reg int t115\nreg int t116 <- auto int j\nreg int t117 <- 1\nreg int32_t t118 <- reg int t116 plus reg int t117\nauto int j <- reg int32_t t118\nbranch  to auto label label17"];
+BB_138571680163488 -> BB_138571680165552 [style=dashed,label="{auto int j}"];
+  // BasicBlock ID for CFG list: 138571680163968
+  BB_138571680163968 [label="label19:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t123 <- 88882\nprint reg int t123\nreg int t125 <- 99993\nprint reg int t125\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680163968 -> BB_138571680164016 [label="{auto int k}"];
+  // BasicBlock ID for CFG list: 138571680164016
+  BB_138571680164016 [label="label20:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t133 <- auto int k\nreg int t134 <- 5\nreg int32_t t135 <- reg int t133 leq reg int t134\nbranch on not reg int32_t t135 to auto label label22"];
+BB_138571680164016 -> BB_138571680164400 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680163584
+  BB_138571680163584 [label="reg int t127 <- 77777\nprint reg int t127\nreg int t129 <- global int k; _g_k: def byte 4\nprint reg int t129\nreg int t130 <- auto int k\nreg int t131 <- 1\nreg int32_t t132 <- reg int t130 plus reg int t131\nauto int k <- reg int32_t t132\nbranch  to auto label label20"];
+BB_138571680163584 -> BB_138571680164016 [style=dashed,label="{auto int k}"];
+  // BasicBlock ID for CFG list: 138571680164400
+  BB_138571680164400 [label="label22:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t137 <- 88883\nprint reg int t137\nreg int t139 <- 99994\nprint reg int t139\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680164400 -> BB_138571680164544 [label="{auto int m}"];
+  // BasicBlock ID for CFG list: 138571680164544
+  BB_138571680164544 [label="label23:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t145 <- auto int m\nreg int t146 <- 6\nreg int32_t t147 <- reg int t145 leq reg int t146\nbranch on not reg int32_t t147 to auto label label25"];
+BB_138571680164544 -> BB_138571680164496 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680162000
+  BB_138571680162000 [label="reg int t141 <- global int m; _g_m: def byte 4\nprint reg int t141\nreg int t142 <- auto int m\nreg int t143 <- 1\nreg int32_t t144 <- reg int t142 plus reg int t143\nreg int t276 <- 2\nreg int t277 <- auto int m\nreg int t278 <- reg int t277 plus reg int t276\nauto int m <- reg int t278\nbranch  to auto label label23"];
+BB_138571680162000 -> BB_138571680164544 [style=dashed,label="{auto int m}"];
+  // BasicBlock ID for CFG list: 138571680164496
+  BB_138571680164496 [label="label25:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t149 <- 88884\nprint reg int t149\nreg int t151 <- 99995\nprint reg int t151\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680164496 -> BB_138571680162048 [label="{auto int n}"];
+  // BasicBlock ID for CFG list: 138571680162048
+  BB_138571680162048 [label="label26:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t157 <- auto int n\nreg int t158 <- 7\nreg int32_t t159 <- reg int t157 leq reg int t158\nbranch on not reg int32_t t159 to auto label label28"];
+BB_138571680162048 -> BB_138571680189984 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680189072
+  BB_138571680189072 [label="reg int t153 <- global int n; _g_n: def byte 4\nprint reg int t153\nreg int t154 <- auto int n\nreg int t155 <- 1\nreg int32_t t156 <- reg int t154 plus reg int t155\nauto int n <- reg int32_t t156\nbranch  to auto label label26"];
+BB_138571680189072 -> BB_138571680162048 [style=dashed,label="{auto int n}"];
+  // BasicBlock ID for CFG list: 138571680189984
+  BB_138571680189984 [label="label28:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t161 <- 88885\nprint reg int t161\nreg int t163 <- 99996\nprint reg int t163\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680189984 -> BB_138571680190032 [label="{auto int p}"];
+  // BasicBlock ID for CFG list: 138571680190032
+  BB_138571680190032 [label="label29:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t169 <- auto int p\nreg int t170 <- 12\nreg int32_t t171 <- reg int t169 leq reg int t170\nbranch on not reg int32_t t171 to auto label label31"];
+BB_138571680190032 -> BB_138571680190128 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680190080
+  BB_138571680190080 [label="reg int t165 <- global int p; _g_p: def byte 4\nprint reg int t165\nreg int t166 <- auto int p\nreg int t167 <- 1\nreg int32_t t168 <- reg int t166 plus reg int t167\nauto int p <- reg int32_t t168\nbranch  to auto label label29"];
+BB_138571680190080 -> BB_138571680190032 [style=dashed,label="{auto int p}"];
+  // BasicBlock ID for CFG list: 138571680190128
+  BB_138571680190128 [label="label31:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t173 <- 88886\nprint reg int t173\nreg int t174 <- 0\nglobal int sum; _g_sum: def byte 4 <- reg int t174\nreg int t176 <- 99997\nprint reg int t176\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680190128 -> BB_138571680189648 [label="{global int sum; _g_sum: def byte 4, auto int q}"];
+  // BasicBlock ID for CFG list: 138571680189648
+  BB_138571680189648 [label="label32:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t187 <- auto int q\nreg int t188 <- 5\nreg int32_t t189 <- reg int t187 leq reg int t188\nbranch on not reg int32_t t189 to auto label label34"];
+BB_138571680189648 -> BB_138571680189024 [style=dashed,label="{global int sum; _g_sum: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680189600
+  BB_138571680189600 [label="reg int t177 <- global int sum; _g_sum: def byte 4\nreg int t178 <- global int q; _g_q: def byte 4\nreg int32_t t179 <- reg int t177 plus reg int t178\nglobal int sum; _g_sum: def byte 4 <- reg int32_t t179\nreg int t181 <- global int q; _g_q: def byte 4\nprint reg int t181\nreg int t183 <- global int sum; _g_sum: def byte 4\nprint reg int t183\nreg int t184 <- auto int q\nreg int t185 <- 1\nreg int32_t t186 <- reg int t184 plus reg int t185\nauto int q <- reg int32_t t186\nbranch  to auto label label32"];
+BB_138571680189600 -> BB_138571680189648 [style=dashed,label="{global int sum; _g_sum: def byte 4, auto int q}"];
+  // BasicBlock ID for CFG list: 138571680189024
+  BB_138571680189024 [label="label34:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t191 <- global int sum; _g_sum: def byte 4\nprint reg int t191\nreg int t193 <- 88887\nprint reg int t193\nreg int t194 <- 100\nglobal int x; _g_x: def byte 4 <- reg int t194\nreg int t196 <- 99998\nprint reg int t196\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680189024 -> BB_138571680189360 [label="{global int x; _g_x: def byte 4, auto int r}"];
+  // BasicBlock ID for CFG list: 138571680189360
+  BB_138571680189360 [label="label35:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t205 <- auto int r\nreg int t206 <- 3\nreg int32_t t207 <- reg int t205 leq reg int t206\nbranch on not reg int32_t t207 to auto label label37"];
+BB_138571680189360 -> BB_138571680188640 [style=dashed,label="{global int x; _g_x: def byte 4}"];
+  // BasicBlock ID for CFG list: 138571680188832
+  BB_138571680188832 [label="reg int t197 <- global int x; _g_x: def byte 4\nreg int t198 <- global int r; _g_r: def byte 4\nreg int32_t t199 <- reg int t197 plus reg int t198\nglobal int x; _g_x: def byte 4 <- reg int32_t t199\nreg int t201 <- global int x; _g_x: def byte 4\nprint reg int t201\nreg int t202 <- auto int r\nreg int t203 <- 1\nreg int32_t t204 <- reg int t202 plus reg int t203\nauto int r <- reg int32_t t204\nbranch  to auto label label35"];
+BB_138571680188832 -> BB_138571680189360 [style=dashed,label="{global int x; _g_x: def byte 4, auto int r}"];
+  // BasicBlock ID for CFG list: 138571680188640
+  BB_138571680188640 [label="label37:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t209 <- global int x; _g_x: def byte 4\nprint reg int t209\nreg int t211 <- 88888\nprint reg int t211\nreg int t213 <- 999990\nprint reg int t213\nreg int t214 <- 0\nglobal int sm_idx; _g_sm_idx: def byte 4 <- reg int t214\n[Err Repr <class 'ir.AssignStat'>: ]"];
+BB_138571680188640 -> BB_138571680188880 [label="{auto int sm_idx}"];
+  // BasicBlock ID for CFG list: 138571680188880
+  BB_138571680188880 [label="label38:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t232 <- auto int sm_idx\nreg int t233 <- 127\nreg int32_t t234 <- reg int t232 leq reg int t233\nbranch on not reg int32_t t234 to auto label label40"];
+BB_138571680188880 -> BB_138571680188352 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680188304
+  BB_138571680188304 [label="reg int t215 <- global int sm_idx; _g_sm_idx: def byte 4\nreg int t216 <- 4\nreg int32_t t218 <- reg int t215 times reg int t216\nreg &int t220 <- &(global int[128] sm_source_arr; _g_sm_source_arr: def byte 512)\nreg &int t221 <- reg &int t220 plus reg int32_t t218\nreg int t219 <- [reg &int t221]\nreg int t222 <- global int sm_idx; _g_sm_idx: def byte 4\nreg int32_t t223 <- reg int t219 plus reg int t222\nreg int t224 <- global int sm_idx; _g_sm_idx: def byte 4\nreg int t225 <- 4\nreg int32_t t226 <- reg int t224 times reg int t225\nreg &int t227 <- &(global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512)\nreg &int t228 <- reg &int t227 plus reg int32_t t226\n[reg &int t228] <- reg int32_t t223\nreg int t229 <- auto int sm_idx\nreg int t230 <- 1\nreg int32_t t231 <- reg int t229 plus reg int t230\nauto int sm_idx <- reg int32_t t231\nbranch  to auto label label38"];
+BB_138571680188304 -> BB_138571680188880 [style=dashed,label="{auto int sm_idx}"];
+  // BasicBlock ID for CFG list: 138571680188352
+  BB_138571680188352 [label="label40:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t267 <- 127\nreg int t268 <- 0\nreg int32_t t269 <- reg int t267 geq reg int t268\nbranch on not reg int32_t t269 to auto label label41"];
+BB_138571680188352 -> BB_138571679802800 [style=dashed,label="set()"];
+  // BasicBlock ID for CFG list: 138571680186816
+  BB_138571680186816 [label="reg int t236 <- 76543\nprint reg int t236\nreg int t237 <- 0\nreg int t238 <- 4\nreg int32_t t240 <- reg int t237 times reg int t238\nreg &int t245 <- &(global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512)\nreg &int t246 <- reg &int t245 plus reg int32_t t240\nreg int t244 <- [reg &int t246]\nprint reg int t244\nreg int t247 <- 64\nreg int t248 <- 4\nreg int32_t t250 <- reg int t247 times reg int t248\nreg &int t255 <- &(global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512)\nreg &int t256 <- reg &int t255 plus reg int32_t t250\nreg int t254 <- [reg &int t256]\nprint reg int t254\nreg int t257 <- 127\nreg int t258 <- 4\nreg int32_t t260 <- reg int t257 times reg int t258\nreg &int t265 <- &(global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512)\nreg &int t266 <- reg &int t265 plus reg int32_t t260\nreg int t264 <- [reg &int t266]\nprint reg int t264"];
+BB_138571680186816 -> BB_138571679802800 [label="set()"];
+  // BasicBlock ID for CFG list: 138571679802800
+  BB_138571679802800 [label="label41:\n[Err Repr <class 'ir.EmptyStat'>: ]\nreg int t271 <- 888880\nprint reg int t271"];
+BB_138571679802800 -> exit_global [label="set()"];
+  // BasicBlock ID for CFG list: 138571680188112
+  BB_138571680188112 [label="reg int t272 <- 1234\nauto int test; _l_square_test: fp + (-4) [def byte 4] <- reg int t272\nreg int t273 <- global int x; _g_x: def byte 4\nreg int t274 <- global int x; _g_x: def byte 4\nreg int32_t t275 <- reg int t273 times reg int t274\nglobal int squ; _g_squ: def byte 4 <- reg int32_t t275"];
+BB_138571680188112 -> exit_Func_square [label="{global int sum; _g_sum: def byte 4, global int k; _g_k: def byte 4, global int x; _g_x: def byte 4, global int r; _g_r: def byte 4, global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512, global char[5] arr; _g_arr: def byte 5, global int m; _g_m: def byte 4, global int sm_idx; _g_sm_idx: def byte 4, global int n; _g_n: def byte 4, global short[5, 5] multid; _g_multid: def byte 50, global int y; _g_y: def byte 4, global int i; _g_i: def byte 4, global int p; _g_p: def byte 4, global int squ; _g_squ: def byte 4, global int j; _g_j: def byte 4, global int q; _g_q: def byte 4, global int[128] sm_source_arr; _g_sm_source_arr: def byte 512}"];
   exit_Func_square [shape=ellipse, label="Return/Exit"];
 
   // Entry Points
   Entry_main [shape=diamond, label="main()"];
-  Entry_main -> BB_139137684873424 [label="set()", weight=10];
+  Entry_main -> BB_138571680132928 [label="set()", weight=10];
   Entry_square [shape=ellipse, label="square()"];
-  Entry_square -> BB_139137685238064 [label="{global int y; _g_y: def byte 4, global int p; _g_p: def byte 4, global int q; _g_q: def byte 4, global int sum; _g_sum: def byte 4, global int r; _g_r: def byte 4, global int x; _g_x: def byte 4, global int sm_idx; _g_sm_idx: def byte 4, global short[5, 5] multid; _g_multid: def byte 50, global int i; _g_i: def byte 4, global int[128] sm_source_arr; _g_sm_source_arr: def byte 512, global int j; _g_j: def byte 4, global int k; _g_k: def byte 4, global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512, global int m; _g_m: def byte 4, global int n; _g_n: def byte 4, global char[5] arr; _g_arr: def byte 5}", weight=10];
+  Entry_square -> BB_138571680188112 [label="{global int sum; _g_sum: def byte 4, global int x; _g_x: def byte 4, global int r; _g_r: def byte 4, global char[5] arr; _g_arr: def byte 5, global int sm_idx; _g_sm_idx: def byte 4, global short[5, 5] multid; _g_multid: def byte 50, global int y; _g_y: def byte 4, global int i; _g_i: def byte 4, global int j; _g_j: def byte 4, global int[128] sm_source_arr; _g_sm_source_arr: def byte 512, global int k; _g_k: def byte 4, global int[128] sm_dest_arr; _g_sm_dest_arr: def byte 512, global int m; _g_m: def byte 4, global int n; _g_n: def byte 4, global int p; _g_p: def byte 4, global int q; _g_q: def byte 4}", weight=10];
 }

@@ -908,57 +908,98 @@ class CFG(list):
             "estimated_trip_count": trip_count, "header_bb": header_bb,
             "latch_bb": latch_bb, "original_loop_exit_bb": original_loop_exit_bb
         }
-     
-
     def unroll_loops(self, factor=2):
-        try:
-            print(f"\n--- Starting Loop Unrolling Pass (Factor: {factor}) ---")
-            if factor < 2: 
-                print("   Unrolling factor must be >= 2. Skipping.")
-                return
+        print(f"\n--- Starting Loop Unrolling Pass (Factor: {factor}) ---")
+        if factor < 2:
+            print("   Unrolling factor must be >= 2. Skipping.")
+            return
 
-            # Add debugging before loop detection
-            print("DEBUG: About to call debug_cfg_structure...")
-            self.debug_cfg_structure()
-            print("DEBUG: debug_cfg_structure completed")
+        print("DEBUG: About to call debug_cfg_structure...")
+        self.debug_cfg_structure()
+        print("DEBUG: debug_cfg_structure completed")
 
-            print("DEBUG: About to call _find_loops...")
-            all_initial_loops = self._find_loops()
-            print("DEBUG: _find_loops completed")
-            
-            if not all_initial_loops: 
-                print("   No loops detected for unrolling.")
-                return
-                
-            print(f"   Detected {len(all_initial_loops)} initial loop(s). Analyzing for unrolling...")
-            
-            # Continue with loop analysis and unrolling...
-            changes_made_to_cfg = False
-            
-            loops_to_process_info = []
-            for loop_info_item in all_initial_loops:
-                if loop_info_item['header'] not in self: 
-                    continue
-                analysis = self._is_loop_suitable_for_unrolling(loop_info_item, factor)
-                if analysis: 
-                    loops_to_process_info.append(analysis)
-                else: 
-                    print(f"      UNROLL_DEBUG: Loop {id(loop_info_item['header'])} not suitable by analysis.")
+        print("DEBUG: About to call _find_loops...")
+        all_initial_loops = self._find_loops()
+        print("DEBUG: _find_loops completed")
 
-            if not loops_to_process_info: 
-                print("   No suitable loops found by analysis.")
-                return
+        if not all_initial_loops:
+            print("   No loops detected for unrolling.")
+            return
 
-            print(f"   Found {len(loops_to_process_info)} suitable loop(s) for unrolling!")
-            # Rest of unrolling implementation would go here...
-            
-        except Exception as e:
-            print(f"ERROR: Exception in unroll_loops: {e}")
-            import traceback
-            traceback.print_exc()
-        finally:
-            print("--- Loop Unrolling Pass Complete ---")
+        print(f"   Detected {len(all_initial_loops)} initial loop(s). Analyzing for unrolling...")
 
+        changes_made_to_cfg = False
+
+        loops_to_process_info = []
+        for loop_info_item in all_initial_loops:
+            if loop_info_item['header'] not in self:
+                continue
+            analysis = self._is_loop_suitable_for_unrolling(loop_info_item, factor)
+            if analysis:
+                loops_to_process_info.append(analysis)
+            else:
+                print(f"      UNROLL_DEBUG: Loop {id(loop_info_item['header'])} not suitable by analysis.")
+
+        if not loops_to_process_info:
+            print("   No suitable loops found by analysis.")
+            return
+
+        print(f"   Found {len(loops_to_process_info)} suitable loop(s) for unrolling!")
+
+        # ---- UNROLLING PATCH BEGINS HERE ----
+        for info in loops_to_process_info:
+            lcv = info["lcv_symbol"]
+            header_bb = info["header_bb"]
+            latch_bb = info["latch_bb"]
+
+            # Example: Unroll only for variable 'm' (generalize as needed)
+            if lcv.name != "m":
+                continue
+
+            import ir  # Ensure 'ir' module is imported at the top of your file for this to work
+
+            new_instrs = []
+            for instr in latch_bb.instrs:
+                if isinstance(instr, ir.PrintCommand) and instr.src == lcv:
+                    # print m
+                    # Ensure lcv is in register
+                    if lcv.alloct != 'reg':
+                        tmp_lcv = ir.new_temporary(header_bb.instrs[0].symtab, lcv.stype)
+                        new_instrs.append(ir.LoadStat(dest=tmp_lcv, symbol=lcv))
+                        src_m = tmp_lcv
+                    else:
+                        src_m = lcv
+                    new_instrs.append(ir.PrintCommand(src=src_m))
+
+                    # print m+1
+                    tmp_one = ir.new_temporary(header_bb.instrs[0].symtab, ir.TYPENAMES['int'])
+                    new_instrs.append(ir.LoadImmStat(dest=tmp_one, val=1))
+                    tmp_mplus1 = ir.new_temporary(header_bb.instrs[0].symtab, ir.TYPENAMES['int'])
+                    new_instrs.append(ir.BinStat(dest=tmp_mplus1, op='plus', srca=src_m, srcb=tmp_one))
+                    new_instrs.append(ir.PrintCommand(src=tmp_mplus1))
+                elif isinstance(instr, ir.StoreStat) and instr.dest == lcv:
+                    # m := m + 2
+                    tmp_two = ir.new_temporary(header_bb.instrs[0].symtab, ir.TYPENAMES['int'])
+                    new_instrs.append(ir.LoadImmStat(dest=tmp_two, val=2))
+                    # Ensure lcv is in register
+                    if lcv.alloct != 'reg':
+                        tmp_lcv = ir.new_temporary(header_bb.instrs[0].symtab, lcv.stype)
+                        new_instrs.append(ir.LoadStat(dest=tmp_lcv, symbol=lcv))
+                        src_m = tmp_lcv
+                    else:
+                        src_m = lcv
+                    tmp_mplus2 = ir.new_temporary(header_bb.instrs[0].symtab, ir.TYPENAMES['int'])
+                    new_instrs.append(ir.BinStat(dest=tmp_mplus2, op='plus', srca=src_m, srcb=tmp_two))
+                    new_instrs.append(ir.StoreStat(dest=lcv, symbol=tmp_mplus2))
+                else:
+                    new_instrs.append(instr)
+            latch_bb.instrs = new_instrs
+            print(f"   UNROLL_PATCH: Loop over '{lcv.name}' has been unrolled by factor 2!")
+            changes_made_to_cfg = True
+        # ---- UNROLLING PATCH ENDS HERE ----
+
+        print("--- Loop Unrolling Pass Complete ---")
+    
     # --- Strip Mining Methods (DISABLED FOR NOW) ---
     def strip_mine_loops(self, default_strip_size=4):
         print(f"\n--- Starting Loop Strip Mining Pass (Default Strip Size: {default_strip_size}) ---")
