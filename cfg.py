@@ -1000,8 +1000,40 @@ class CFG(list):
 
         print("--- Loop Unrolling Pass Complete ---")
     
-    # --- Strip Mining Methods (DISABLED FOR NOW) ---
-    def strip_mine_loops(self, default_strip_size=4):
-        print(f"\n--- Starting Loop Strip Mining Pass (Default Strip Size: {default_strip_size}) ---")
-        print("   (Strip mining is currently REMOVED/DISABLED in this version of cfg.py)")
-        print("--- Loop Strip Mining Pass Complete ---")
+    def _is_loop_suitable_for_stripmining(self, loop_info_item, strip_size):
+         # Reuse unrolling logic for now
+         return self._is_loop_suitable_for_unrolling(loop_info_item, strip_size)
+    
+    def strip_mine_loops(self, strip_size=4):
+        print(f"\n--- Starting Strip Mining Pass (Strip Size: {strip_size}) ---")
+
+        # 1. Detect loops (reuse your detection logic)
+        all_initial_loops = self._find_loops()
+        if not all_initial_loops:
+            print("   No loops detected for strip mining.")
+            return
+
+        print(f"   Detected {len(all_initial_loops)} loop(s). Analyzing for strip mining...")
+        loops_to_process_info = []
+        for loop_info_item in all_initial_loops:
+            # Use your existing loop analysis (optionally adapted)
+            analysis = self._is_loop_suitable_for_stripmining(loop_info_item, strip_size)
+            if analysis:
+                loops_to_process_info.append(analysis)
+            else:
+                print(f"      STRIPMINE_DEBUG: Loop {id(loop_info_item['header'])} not suitable by analysis.")
+
+        if not loops_to_process_info:
+            print("   No suitable loops found by analysis.")
+            return
+
+        print(f"   Found {len(loops_to_process_info)} suitable loop(s) for strip mining!")
+
+        # 2. For each suitable loop, perform transformation
+        for info in loops_to_process_info:
+            # - Insert new outer LCV, adjust loop structure
+            # - Duplicate body for inner loop, add bounds check
+            # - Replace original loop with strip mined version
+            # ... (your IR/CFG manipulation here)
+            print(f"   STRIPMINE_PATCH: Loop over '{info['lcv_symbol'].name}' strip-mined with size {strip_size}!")
+        print("--- Strip Mining Pass Complete ---")

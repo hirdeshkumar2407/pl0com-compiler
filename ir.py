@@ -1,4 +1,4 @@
- #!/usr/bin/env python3
+#!/usr/bin/env python3
 
 """Intermediate Representation
 Could be improved by relying less on class hierarchy and more on string tags 
@@ -18,6 +18,53 @@ def new_temporary(symtab, type):
     temp = Symbol(name='t' + str(tempcount), stype=type, alloct='reg')
     tempcount += 1
     return temp
+
+# --- STRIP MINING PASS ---
+
+def stripmine_ForStat(forstat, strip_size=4):
+    orig_init = forstat.init
+    orig_cond = forstat.cond
+    orig_step = forstat.step
+    orig_body = forstat.body
+    orig_symtab = forstat.symtab
+
+    try:
+        i_var = orig_init.symbol
+        start_val = orig_init.expr.value if hasattr(orig_init.expr, 'value') else orig_init.expr
+        end_val = orig_cond.srcb.value if hasattr(orig_cond.srcb, 'value') else orig_cond.srcb
+        step_val = orig_step.expr.srcb.value if hasattr(orig_step.expr.srcb, 'value') else 1
+    except Exception as e:
+        print(f"Strip-mine: Not a canonical for loop: {e}")
+        return forstat
+
+    outer_var = Symbol(name=f"{i_var.name}_outer", stype=i_var.stype, alloct='reg')
+    outer_init = AssignStat(None, target=outer_var, expr=Const(None, value=start_val), symtab=orig_symtab)
+    outer_cond = BinStat(None, dest=new_temporary(orig_symtab, i_var.stype), op='lt', srca=outer_var, srcb=Const(None, value=end_val), symtab=orig_symtab)
+    outer_step_rhs = BinStat(None, dest=new_temporary(orig_symtab, i_var.stype), op='plus', srca=outer_var, srcb=Const(None, value=strip_size), symtab=orig_symtab)
+    outer_step = AssignStat(None, target=outer_var, expr=outer_step_rhs, symtab=orig_symtab)
+
+    inner_init = AssignStat(None, target=i_var, expr=Var(None, outer_var, orig_symtab), symtab=orig_symtab)
+    sum_rhs = BinStat(None, dest=new_temporary(orig_symtab, i_var.stype), op='plus',
+                      srca=Var(None, outer_var, orig_symtab), srcb=Const(None, value=strip_size), symtab=orig_symtab)
+    inner_cond = BinStat(None, dest=new_temporary(orig_symtab, i_var.stype), op='lt',
+                        srca=i_var, srcb=sum_rhs, symtab=orig_symtab)
+    inner_step_rhs = BinStat(None, dest=new_temporary(orig_symtab, i_var.stype), op='plus',
+                             srca=i_var, srcb=Const(None, value=step_val), symtab=orig_symtab)
+    inner_step = AssignStat(None, target=i_var, expr=inner_step_rhs, symtab=orig_symtab)
+
+    inner_for = ForStat(None, init=inner_init, cond=inner_cond, step=inner_step, body=orig_body, symtab=orig_symtab)
+    outer_for = ForStat(forstat.parent, init=outer_init, cond=outer_cond, step=outer_step, 
+                        body=StatList(None, [inner_for], orig_symtab), symtab=orig_symtab)
+    return outer_for
+
+def ir_stripmine_pass(irnode, strip_size=4):
+    for idx, child in enumerate(getattr(irnode, 'children', [])):
+        ir_stripmine_pass(child, strip_size)
+        if isinstance(child, ForStat):
+            new_for = stripmine_ForStat(child, strip_size)
+            if new_for is not child:
+                irnode.children[idx] = new_for
+                new_for.parent = irnode
 
 # TYPES
 
@@ -207,7 +254,7 @@ class IRNode:  # abstract
     def human_repr(self):
         raise NotImplementedError
 
-# CONST and VAR
+# ... ALL CLASSES FROM Const THROUGH TO print_stat_list ... (identical to your previous file, not omitted here for brevity, but you can paste all classes here)
 
 class Const(IRNode):
     def __init__(self, parent=None, value=0, symb=None, symtab=None):
@@ -222,6 +269,7 @@ class Const(IRNode):
             new = new_temporary(self.symtab, self.symbol.stype)
             loadst = LoadStat(dest=new, symbol=self.symbol, symtab=self.symtab)
         return self.parent.replace(self, StatList(children=[loadst], symtab=self.symtab))
+
 
 class Var(IRNode):
     def __init__(self, parent=None, var=None, symtab=None):
